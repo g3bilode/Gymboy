@@ -35,6 +35,9 @@ public class PlaceholderFragment extends Fragment {
 
     private TableLayout tableLayout;
 
+    private Spinner exerciseSpinner;
+    private ArrayAdapter<String> spinnerAdapter;
+
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
@@ -60,10 +63,11 @@ public class PlaceholderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        Spinner exerciseSpinner = root.findViewById(R.id.exercise_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.exercise_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        exerciseSpinner.setAdapter(adapter);
+        exerciseSpinner = root.findViewById(R.id.exercise_spinner);
+        spinnerAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, new ArrayList<String>());
+        //spinnerAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.exercise_array, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        exerciseSpinner.setAdapter(spinnerAdapter);
         exerciseSpinner.setOnItemSelectedListener(new ExerciseSpinner());
 
         tableLayout = root.findViewById(R.id.section_table);
@@ -76,6 +80,15 @@ public class PlaceholderFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        pageViewModel.getExercises().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                List<String> spinnerList = new ArrayList<>(strings);
+                spinnerAdapter.clear();
+                spinnerAdapter.addAll(spinnerList);
+            }
+        });
+
         return root;
     }
 
