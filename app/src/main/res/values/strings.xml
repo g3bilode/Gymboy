@@ -11,4 +11,12 @@
     <string name="week">Week</string>
     <string name="phase">Phase</string>
 
+    <string-array name="exercise_array">
+        <item>Exercise 1</item>
+        <item>Exercise 2</item>
+        <item>Exercise 3</item>
+        <item>Exercise 4</item>
+        <item>Exercise 5</item>
+    </string-array>
+
 </resources>
